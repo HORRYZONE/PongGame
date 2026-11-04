@@ -6,7 +6,9 @@ float player1_p, player1_velocity;
 float player2_p, player2_velocity;
 float arena_half_size_x = 85, arena_half_size_y = 45;
 float player_half_size_x = 2.5, player_half_size_y = 12;
-float ball_p_x, ball_p_y, ball_velocity_x = 100, ball_velocity_y, ball_half_size = 1;
+float ball_p_x, ball_p_y, ball_velocity_x = 130, ball_velocity_y, ball_half_size = 1;
+
+int player_1_score, player_2_score;
 
 internal void simulate_player(float *player_position, float *velocity, float acceleration, float dt) { 
 
@@ -57,10 +59,20 @@ internal void simulate_game(Input* input, float dt) {
 
 	
 	float player1_acceleration = 0.f;
+
+#if 0
 	//acceleration must be constant
 	if (is_down(BUTTON_UP)) { player1_acceleration += 2000; }
 	if (is_down(BUTTON_DOWN)) { player1_acceleration -= 2000; }
 
+#else
+	//if (ball_p_y > player1_p + 2.f) { player1_acceleration += 1300; }
+	//if (ball_p_y < player1_p - 2.f) { player1_acceleration -= 1300; }
+	player1_acceleration = (ball_p_y - player1_p) * 100;
+	if (player1_acceleration > 1300) player1_acceleration = 1300;
+	if (player1_acceleration < - 1300) player1_acceleration = -1300;
+
+#endif
 
 		float player2_acceleration = 0.f;
 	//acceleration must be constant
@@ -106,6 +118,7 @@ internal void simulate_game(Input* input, float dt) {
 			ball_velocity_y = 0;
 			ball_p_x = 0;
 			ball_p_y = 0;
+			player_1_score++;
 		}
 		else if (ball_p_x - ball_half_size < -arena_half_size_x)
 		{
@@ -113,9 +126,13 @@ internal void simulate_game(Input* input, float dt) {
 			ball_velocity_y = 0;
 			ball_p_x = 0;
 			ball_p_y = 0;
+			player_2_score++;
 		}
 
 	}
+
+	draw_number(player_1_score, -10, 40, 1.f, 0xbbffbb);
+	draw_number(player_2_score, 10, 40, 1.f, 0xbbffbb);
 
 	//rendering
 	draw_rect(ball_p_x, ball_p_y, ball_half_size, ball_half_size, 0xffffff);
