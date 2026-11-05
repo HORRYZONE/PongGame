@@ -64,11 +64,25 @@ int hot_button;
 bool enemy_is_ai;
 
 internal void simulate_game(Input* input, float dt) {
-	draw_rect(0, 0, arena_half_size_x, arena_half_size_y, 0xffaa33);
-	draw_arena_borders(arena_half_size_x, arena_half_size_y, 0xff5500);
 
 	if (current_gamemode == GM_GAMEPLAY)
 	{
+		// 1. Table Surface (Tournament Blue)
+		draw_rect(0, 0, arena_half_size_x, arena_half_size_y, 0x0f2b46);
+
+		// 2. Outer Boundary Lines (White border frame around the table edges)
+		// Top & Bottom outer lines
+		draw_rect(0, arena_half_size_y - 0.75f, arena_half_size_x, 0.75f, 0xffffff);
+		draw_rect(0, -arena_half_size_y + 0.75f, arena_half_size_x, 0.75f, 0xffffff);
+		// Left & Right outer lines
+		draw_rect(-arena_half_size_x + 0.75f, 0, 0.75f, arena_half_size_y, 0xffffff);
+		draw_rect(arena_half_size_x - 0.75f, 0, 0.75f, arena_half_size_y, 0xffffff);
+
+		// 3. Center Net (Dashed white line running vertically down x = 0)
+		for (float y = -arena_half_size_y + 2.f; y < arena_half_size_y - 2.f; y += 4.f) {
+			draw_rect(0, y, 0.5f, 1.5f, 0xffffff);
+		}
+
 		float player1_acceleration = 0.f;
 
 		if (!enemy_is_ai)
@@ -157,6 +171,20 @@ internal void simulate_game(Input* input, float dt) {
 
 	else
 	{
+		// --- MENU BACKGROUND (Sci-Fi Grid) ---
+		// 1. Dark base background
+		draw_rect(0, 0, arena_half_size_x, arena_half_size_y, 0x050510);
+
+		// 2. Safe vertical grid lines
+		for (float x = -80.f; x <= 80.f; x += 15.f) {
+			draw_rect(x, 0, 0.1f, arena_half_size_y, 0x112233);
+		}
+
+		// 3. Safe horizontal grid lines
+		for (float y = -40.f; y <= 40.f; y += 15.f) {
+			draw_rect(0, y, arena_half_size_x, 0.1f, 0x112233);
+		}
+
 		// --- HELPER LAMBDA FOR DYNAMIC CENTERING ---
 		auto draw_centered_text = [](const char* text, float y, float size, u32 color) {
 			int len = 0;
