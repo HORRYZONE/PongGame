@@ -17,6 +17,7 @@ global_variable Render_State render_state;
 #include "platform_common.cpp"
 #include "game.cpp"
 
+
 LRESULT CALLBACK window_callback(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	LRESULT result = 0;
 	switch (uMsg)
@@ -126,6 +127,7 @@ case vk:{\
 						process_button(BUTTON_LEFT, VK_LEFT);
 						process_button(BUTTON_RIGHT, VK_RIGHT);
 						process_button(BUTTON_ENTER, VK_RETURN);
+						process_button(BUTTON_ESC, VK_ESCAPE);
 					}
 				} break;
 

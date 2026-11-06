@@ -67,6 +67,23 @@ internal void simulate_game(Input* input, float dt) {
 
 	if (current_gamemode == GM_GAMEPLAY)
 	{
+		if (pressed(BUTTON_ESC)) {
+			clear_screen(0x000000);
+			current_gamemode = GM_MENU;
+			// Reset game state
+			player_1_score = 0;
+			player_2_score = 0;
+			player1_p = 0;
+			player1_velocity = 0;
+			player2_p = 0;
+			player2_velocity = 0;
+			ball_p_x = 0;
+			ball_p_y = 0;
+			ball_velocity_x = 130;
+			ball_velocity_y = 0;
+			return;
+		}
+
 		// 1. Table Surface (Tournament Blue)
 		draw_rect(0, 0, arena_half_size_x, arena_half_size_y, 0x0f2b46);
 
@@ -163,9 +180,16 @@ internal void simulate_game(Input* input, float dt) {
 		draw_number(player_2_score, 10, 40, 1.f, 0xbbffbb);
 
 		//rendering
-		draw_rect(ball_p_x, ball_p_y, ball_half_size, ball_half_size, 0xffffff);
-		draw_rect(80, player1_p, player_half_size_x, player_half_size_y, 0xff0000);
-		draw_rect(-80, player2_p, player_half_size_x, player_half_size_y, 0xff0000);
+		draw_rect(ball_p_x, ball_p_y, ball_half_size, ball_half_size, 0xffcc00);
+
+		// --- PADDLE RENDERING (Clean Arcade Look) ---
+		// Player 1 (Right side)
+		draw_rect(80, player1_p, player_half_size_x + 0.5f, player_half_size_y + 0.5f, 0x111111); // Dark border frame
+		draw_rect(80, player1_p, player_half_size_x, player_half_size_y, 0xff2222);           // Bright neon red face
+
+		// Player 2 (Left side)
+		draw_rect(-80, player2_p, player_half_size_x + 0.5f, player_half_size_y + 0.5f, 0x111111); // Dark border frame
+		draw_rect(-80, player2_p, player_half_size_x, player_half_size_y, 0xff2222);           // Bright neon red face
 
 	}
 
